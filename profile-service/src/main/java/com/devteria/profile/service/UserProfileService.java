@@ -1,5 +1,7 @@
 package com.devteria.profile.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.devteria.profile.dto.request.ProfileCreationRequest;
@@ -27,9 +29,15 @@ public class UserProfileService {
         return userProfileMapper.toUserProfileResponse(userProfile);
     }
 
-    public UserProfileResponse getProfile(String id) {
-        UserProfile userProfile =
-                userProfileRepository.findById(id).orElseThrow(() -> new RuntimeException("Profile not found!"));
+    public UserProfileResponse getProfile(String userId) {
+        UserProfile userProfile = userProfileRepository
+                .findUserProfileByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Profile not found!"));
         return userProfileMapper.toUserProfileResponse(userProfile);
+    }
+
+    public List<UserProfileResponse> getAllProfiles() {
+        var profiles = userProfileRepository.findAll();
+        return profiles.stream().map(userProfileMapper::toUserProfileResponse).toList();
     }
 }
