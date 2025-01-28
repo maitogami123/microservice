@@ -7,4 +7,9 @@ spring:
     name: notification-service
   data:
     mongodb:
-      uri: mongodb://root:root@localhost:27017/notification-service?authSource=admin
+      uri: 
+app:
+  services:
+    mail: 
+      api: your_mail_service_api
+      key: your_mail_service_key

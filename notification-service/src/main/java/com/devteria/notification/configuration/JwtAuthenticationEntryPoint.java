@@ -1,4 +1,4 @@
-package com.devteria.profile.configuration;
+package com.devteria.notification.configuration;
 
 import java.io.IOException;
 
@@ -9,8 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-import com.devteria.profile.dto.ApiResponse;
-import com.devteria.profile.exception.ErrorCode;
+import com.devteria.notification.dto.ApiResponse;
+import com.devteria.notification.exception.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -18,7 +18,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(
             HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException {
-        ErrorCode errorCode = ErrorCode.UNAUTHENTICATED;
+        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
 
         response.setStatus(errorCode.getStatusCode().value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

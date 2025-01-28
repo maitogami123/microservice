@@ -1,4 +1,4 @@
-package com.devteria.profile.configuration;
+package com.devteria.notification.configuration;
 
 import java.text.ParseException;
 
