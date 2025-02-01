@@ -1,6 +1,5 @@
 package com.devteria.notification.controller;
 
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,10 +26,5 @@ public class EmailController {
         return ApiResponse.<EmailResponse>builder()
                 .result(emailService.sendEmail(request))
                 .build();
-    }
-
-    @KafkaListener(topics = "onboard-successful", groupId = "notification-service")
-    public void listenOnboardSuccessful(String message) {
-        log.info("Received message: {}", message);
     }
 }

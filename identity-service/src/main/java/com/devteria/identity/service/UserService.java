@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.devteria.event.dto.NotificationEvent;
 import com.devteria.identity.constant.PredefinedRole;
 import com.devteria.identity.dto.request.UserCreationRequest;
 import com.devteria.identity.dto.request.UserUpdateRequest;
@@ -39,7 +40,7 @@ public class UserService {
     ProfileMapper profileMapper;
     PasswordEncoder passwordEncoder;
     ProfileClient profileClient;
-    KafkaTemplate<String, String> kafkaTemplate;
+    KafkaTemplate<String, Object> kafkaTemplate;
 
     public UserResponse createUser(UserCreationRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) throw new AppException(ErrorCode.USER_EXISTED);
@@ -56,7 +57,15 @@ public class UserService {
         var profileRequest = profileMapper.toProfileCreationRequest(request);
         profileRequest.setUserId(user.getId());
 
-        kafkaTemplate.send("onboard-successful", "Welcome to our platform, " + user.getUsername());
+        new NotificationEvent();
+        kafkaTemplate.send(
+                "notification-delivery",
+                NotificationEvent.builder()
+                        .channel("EMAIL")
+                        .recipient(request.getEmail())
+                        .subject("Welcome to bookteria")
+                        .body("Welcome to bookteria, " + request.getUsername() + "!")
+                        .build());
 
         profileClient.createProfile(profileRequest);
 

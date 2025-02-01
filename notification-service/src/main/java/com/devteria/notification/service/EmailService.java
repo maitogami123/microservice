@@ -2,6 +2,7 @@ package com.devteria.notification.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.devteria.notification.dto.request.EmailRequest;
@@ -15,14 +16,17 @@ import com.devteria.notification.repository.httpClient.EmailClient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EmailService {
     EmailClient emailClient;
 
-    String apiKey = "${app.services.mail.key}";
+    @Value("${notification.email.brevo-apikey}")
+    @NonFinal
+    String apiKey;
 
     public EmailResponse sendEmail(SendEmailRequest request) {
         EmailRequest emailRequest = EmailRequest.builder()
@@ -30,7 +34,7 @@ public class EmailService {
                         .name("Devteria")
                         .email("shikigamimaito25@gmail.com")
                         .build())
-                .receipients(List.of(request.getTo()))
+                .to(List.of(request.getTo()))
                 .subject(request.getSubject())
                 .htmlContent(request.getHtmlContent())
                 .build();

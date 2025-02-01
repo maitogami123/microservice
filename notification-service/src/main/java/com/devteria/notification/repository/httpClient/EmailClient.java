@@ -9,11 +9,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import com.devteria.notification.dto.request.EmailRequest;
 import com.devteria.notification.dto.response.EmailResponse;
 
-@FeignClient(
-        name = "mail-service",
-        url = "${app.services.mail.api}",
-        configuration = {})
+@FeignClient(name = "email-client", url = "${notification.email.brevo-url}")
 public interface EmailClient {
-    @PostMapping(value = "/sendMail", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/v3/smtp/email", produces = MediaType.APPLICATION_JSON_VALUE)
     EmailResponse sendEmail(@RequestHeader("api-key") String apiKey, @RequestBody EmailRequest body);
 }

@@ -1,6 +1,4 @@
-package com.devteria.notification.dto.request;
-
-import java.util.List;
+package com.devteria.event.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,13 +8,16 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class EmailRequest {
-    Sender sender;
-    List<Recipient> to;
-    String htmlContent;
+public class NotificationEvent {
+    String channel;
+    String recipient;
+    // String templateCode;
+    // Map<String, Object> params;
+    // Remove later, just for testing
     String subject;
+    String body;
 }
